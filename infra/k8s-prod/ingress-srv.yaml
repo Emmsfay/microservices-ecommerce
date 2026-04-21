@@ -3,48 +3,44 @@ kind: Ingress
 metadata:
   name: ingress-service
   annotations:
-    kubernetes.io/ingress.class: nginx
-    nginx.ingress.kubernetes.io/use-regex: "true"
-    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    cert-manager.io/cluster-issuer: "letsencrypt-staging"
 spec:
-  tls:
-    - hosts:
-        - www.aurapan.com
-      secretName: echo-tls
+  ingressClassName: nginx
   rules:
-    - host: www.aurapan.com
+    - host: aurapan.40.127.156.53.nip.io
       http:
         paths:
-          - path: /api/payments/?(.*)
-            pathType: Prefix
+          - path: /api/payments(/|$)(.*)
+            pathType: ImplementationSpecific
             backend:
               service:
                 name: payment-srv
                 port:
                   number: 3000
-          - path: /api/users/?(.*)
-            pathType: Prefix
+          - path: /api/users(/|$)(.*)
+            pathType: ImplementationSpecific
             backend:
               service:
                 name: user-srv
                 port:
                   number: 3000
-          - path: /api/products/?(.*)
-            pathType: Prefix
+          - path: /api/products(/|$)(.*)
+            pathType: ImplementationSpecific
             backend:
               service:
                 name: product-srv
                 port:
                   number: 3000
-          - path: /api/orders/?(.*)
-            pathType: Prefix
+          - path: /api/orders(/|$)(.*)
+            pathType: ImplementationSpecific
             backend:
               service:
                 name: order-srv
                 port:
                   number: 3000
-          - path: /?(.*)
-            pathType: Prefix
+          - path: /(.*)
+            pathType: ImplementationSpecific
             backend:
               service:
                 name: client-srv
@@ -55,8 +51,7 @@ apiVersion: v1
 kind: Service
 metadata:
   annotations:
-    service.beta.kubernetes.io/do-loadbalancer-enable-proxy-protocol: "true"
-    service.beta.kubernetes.io/do-loadbalancer-hostname: "www.aurapan.com"
+    service.beta.kubernetes.io/azure-load-balancer-health-probe-request-path: /healthz
   labels:
     helm.sh/chart: ingress-nginx-4.0.15
     app.kubernetes.io/name: ingress-nginx

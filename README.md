@@ -23,459 +23,470 @@ Aurapan is a women's clothing e-commerce website that features a fully operation
 - [Demo](#demo)
 - [Features](#features)
 - [Usage](#usage)
-	- [Sign up for an account](#sign-up-for-an-account)
-	- [Purchase products](#purchase-products)
-		- [Pay with Stripe method (recommended)](#pay-with-stripe-method-recommended)
-		- [Pay with the PayPal method](#pay-with-the-paypal-method)
-	- [Receive an order](#receive-an-order)
-	- [Access the admin dashboard](#access-the-admin-dashboard)
-	- [Add a product to your wishlist](#add-a-product-to-your-wishlist)
-	- [Perform CRUD operations on the product database (create, update, delete)](#perform-crud-operations-on-the-product-database-create-update-delete)
+  - [Sign up for an account](#sign-up-for-an-account)
+  - [Purchase products](#purchase-products)
+    - [Pay with Stripe method (recommended)](#pay-with-stripe-method-recommended)
+    - [Pay with the PayPal method](#pay-with-the-paypal-method)
+  - [Receive an order](#receive-an-order)
+  - [Access the admin dashboard](#access-the-admin-dashboard)
+  - [Add a product to your wishlist](#add-a-product-to-your-wishlist)
+  - [Perform CRUD operations on the product database (create, update, delete)](#perform-crud-operations-on-the-product-database-create-update-delete)
 - [Installation](#installation)
-	- [Running on Google Cloud Platform](#running-on-google-cloud-platform)
-	- [Running on Docker Desktop](#running-on-docker-desktop)
+  - [Running on Google Cloud Platform](#running-on-google-cloud-platform)
+  - [Running on Docker Desktop](#running-on-docker-desktop)
 - [Setup Kubernetes Secret](#setup-kubernetes-secret)
 - [Deployment](#deployment)
-	- [Deploy on DigitalOcean](#deploy-on-digitalocean)
+  - [Deploy on DigitalOcean](#deploy-on-digitalocean)
 - [Technology](#technology)
 - [Disclaimer](#disclaimer)
 
 # Demo
 
-[(Back to top)](#table-of-contents)
+# 🛍️ Aurapan E-Commerce — Cloud Native Microservices on Azure
 
-The Live demo is currently _**terminated**_ due to the high-cost maintenance for paying Kubernetes cluster to host a microservices website. 😆
+> A production-grade, cloud-native e-commerce platform built with a microservices architecture, deployed on **Microsoft Azure** using **AKS**, **Terraform IaC**, **Azure Pipelines CI/CD**, **Azure Container Registry**, and **Azure Key Vault**.
 
-_You can still run it manually with docker-desktop on your local machine._
+---
 
-<!-- To experience Aurapan, please visit [www.aurapan.com](https://www.aurapan.com/). -->
+## 📌 Project Overview
 
-# Features
+Aurapan is a full-stack e-commerce web application for women's clothing. The project was originally built by [thasup](https://github.com/thasup/microservices-ecommerce) and re-architected and deployed to **Azure** as a DevOps engineering practice project.
 
-[(Back to top)](#table-of-contents)
+The deployment demonstrates real-world production DevOps skills including:
 
-Aurapan's features include:
+- Infrastructure as Code with **Terraform**
+- Container orchestration with **Azure Kubernetes Service (AKS)**
+- CI/CD automation with **Azure DevOps Pipelines**
+- Secrets management with **Azure Key Vault + External Secrets Operator**
+- TLS termination with **cert-manager + Let's Encrypt**
+- Autoscaling with **Horizontal Pod Autoscalers (HPA)**
+- Observability with **Azure Monitor + Prometheus + Grafana**
 
-- A fully operational **microservices-architecture** website with user, product, order, payment, and expiration services completely separated.
-- All user, product, order, and payment data is stored in separate **MongoDB** collections.
-- User authentication secured by encrypting passwords using **JWT** and cookies.
-- A customer account settings dashboard to update profile information or see all orders.
-- An admin management dashboard with the authority to add, edit, and delete a product, user, or order.
-- Detailed product information with multiple options, such as color and size, displayed in a fashionable design with the **Swiper** library.
-- A full-featured shopping cart, including the ability to add, edit, and remove items.
-- A fully functional checkout process, including login, shipping address selection, and payment method selection.
-- Acceptance of both **PayPal and Stripe** integration payment methods.
-- Ability for an admin to mark orders as delivered.
-- The ability for customers to make product reviews and ratings with instant calculation of new ratings.
-- The ability to accept coupon promotions.
-- A cool navigation bar and breadcrumb for easy navigation.
-- Implementation of the **Optimistic concurrency control** concept with Mongoose to handle concurrency issues with event flow.
-- Optimization of **Next.js** features to maximize performance and quality in the Lighthouse report.
-- A safely secured **HTTPS protocol** with Let's Encrypt certificate.
-- Integration of **Google Analytics 4** script to track significant events on the website.
-  <!-- - Integrate wishlist in user data (work in process...) -->
-  <!-- - Product search feature (work in process...) -->
-  <!-- - Sorting and filtering all products on store (work in process...) -->
+---
 
-	<!--
-	Something might be a bit exaggerated but one certain thing is that I put all my ❤️ into creating this project.
-	happy browsing! 😊
-	-->
-
-# Usage
-
-[(Back to top)](#table-of-contents)
-
-This readme file provides an overview of the usage of the Aurapan website. Here are some instructions on how to use the website's features:
-
-## Sign up for an account
-1. To create an account, visit the [signup page](https://www.aurapan.com/signup).
-2. Enter your email, password, name, gender, and age (these can be fictional since Aurapan is a fictional store).
-
-## Purchase products
-### Pay with Stripe method (recommended)
-1. Use the following card number: `4242 4242 4242 4242`.
-2. Use any future date for `MM/YY`.
-3. Use any number for `CVC`.
-
-### Pay with the PayPal method
-1. You will need a PayPal account.
-2. Create a PayPal developer account by visiting [https://developer.paypal.com/tools/sandbox/accounts/](https://developer.paypal.com/tools/sandbox/accounts/).
-3. Choose the PayPal payment method and sign in with your sandbox account to pay for an order (with fake money).
-
-## Receive an order
-1. Only an admin can change an order status to `delivered`.
-2. You will never receive any real products (even if your order has been marked as `delivered`). 😛
-
-## Access the admin dashboard
-1. To access the admin dashboard, sign in with an admin account.
-2. Access the dashboard through the management menu in the profile dropdown menu.
-
-## Add a product to your wishlist
-Unfortunately, this feature is not yet available on Aurapan. 😎
-
-## Perform CRUD operations on the product database (create, update, delete)
-To perform CRUD operations on the product database, you need permission to access this function as an admin.
-
-# Installation
-
-[(Back to top)](#table-of-contents)
-
-## Running on Google Cloud Platform
-
-[![GCP Badge](https://img.shields.io/badge/-Google_Cloud-4285F4?style=flat&logo=googlecloud&logoColor=white)](https://cloud.google.com/gcp/)
-
-Follow these steps to run the project on Google Cloud Platform:
-
-1. Clone the _cloud_ branch to your local machine.
-
-2. Install [Node.js](https://nodejs.org/en/), [Skaffold](https://skaffold.dev/), [Docker](https://www.docker.com/), and [kubectl](https://kubernetes.io/docs/tasks/tools/).
-
-3. Sign up for a free account with $300 on GCP and create a Docker Hub account.
-
-4. Run the `setup.sh` script by executing the following command in the root directory of this project:
-
-```sh
-source setup.sh
-```
-
-The script will prompt you to enter your Docker registry account name and will build and push the Docker images for each folder that contains a `Dockerfile`.
-
-5. Create a new project on GCP and enable _Kubernetes Engine API_ and _Cloud Build API_. After successfully enabling API services, grant permission for the _Cloud Build_ service account permission on _Cloud Build API_.
-
-6. Create a new Kubernetes cluster with the minimum resource of 3 nodes (recommended) and select the region closest to your location.
-
-7. Install [GCP SDK](https://cloud.google.com/sdk/docs/install-sdk) to connect our images to the GCP cluster context. (Learn how to install Google Cloud SDK on macOS [here](https://stackoverflow.com/questions/31037279/gcloud-command-not-found-while-installing-google-cloud-sdk))
-
-8. Open the Google Cloud SDK and log in. Initiate and then choose the correct options to proceed by running the following commands:
+## 🏗️ Architecture
 
 ```
-gcloud auth login
-gcloud init
+                        ┌─────────────────────────────────────┐
+                        │         Azure Kubernetes Service      │
+                        │                                       │
+  User Browser  ──────► │  Ingress-NGINX (Load Balancer)       │
+                        │         │                             │
+                        │   ┌─────┴──────────────────────┐     │
+                        │   │         Services            │     │
+                        │   ├─────────────────────────────┤     │
+                        │   │  client-srv   (Next.js)     │     │
+                        │   │  user-srv     (Node/TS)     │     │
+                        │   │  product-srv  (Node/TS)     │     │
+                        │   │  order-srv    (Node/TS)     │     │
+                        │   │  payment-srv  (Node/TS)     │     │
+                        │   │  expiration-srv (Node/TS)   │     │
+                        │   └─────────────────────────────┘     │
+                        │         │           │                  │
+                        │   ┌─────┴───┐  ┌───┴──────┐          │
+                        │   │  NATS   │  │ MongoDB  │          │
+                        │   │Streaming│  │ (x4 DBs) │          │
+                        │   └─────────┘  └──────────┘          │
+                        └─────────────────────────────────────── ┘
+                                         │
+                        ┌────────────────▼───────────────────────┐
+                        │           Azure Services                │
+                        │  ACR │ Key Vault │ Monitor │ DNS │ LB  │
+                        └────────────────────────────────────────┘
 ```
 
-9. Create a Kubernetes context on your desktop by running this command (replace `<YOUR_CLUSTER_NAME>` with the name of the cluster you created on GCP):
+---
+
+## 🧱 Tech Stack
+
+### Application
+
+| Layer            | Technology                   |
+| ---------------- | ---------------------------- |
+| Frontend         | Next.js, React, TailwindCSS  |
+| Backend Services | Node.js, Express, TypeScript |
+| Database         | MongoDB (per service)        |
+| Cache            | Redis                        |
+| Message Bus      | NATS Streaming Server        |
+| Payment          | Flutterwave                  |
+| Auth             | JWT + Cookies                |
+
+### DevOps & Infrastructure
+
+| Tool                               | Purpose                             |
+| ---------------------------------- | ----------------------------------- |
+| **Azure Kubernetes Service (AKS)** | Container orchestration             |
+| **Azure Container Registry (ACR)** | Docker image storage                |
+| **Azure Pipelines**                | CI/CD automation                    |
+| **Terraform**                      | Infrastructure as Code              |
+| **Azure Key Vault**                | Secrets management                  |
+| **External Secrets Operator**      | Key Vault → K8s secret sync         |
+| **Ingress-NGINX**                  | Ingress controller + load balancing |
+| **cert-manager**                   | TLS certificate automation          |
+| **Helm**                           | Kubernetes package management       |
+| **Azure Monitor**                  | Metrics and alerting                |
+| **Log Analytics Workspace**        | Centralized logging                 |
+| **Prometheus + Grafana**           | Application monitoring              |
+| **HPA**                            | Horizontal Pod Autoscaling          |
+
+---
+
+## 📁 Directory Structure
 
 ```
-gcloud container clusters get-credentials <YOUR_CLUSTER_NAME>
+aurapan-ecommerce/
+│
+├── azure-pipelines.yml                  ← Master CI/CD pipeline definition
+├── .gitignore
+├── README.md
+│
+├── .azure/                              ← Reusable Azure Pipeline templates
+│   └── templates/
+│       ├── build-service.yml            ← Build + test + push one service to ACR
+│       ├── deploy-manifests.yml         ← kubectl apply all K8s manifests
+│       └── terraform-apply.yml          ← Terraform init + apply
+│
+├── infra/                               ← All infrastructure code
+│   │
+│   ├── terraform/                       ← Azure IaC (Terraform)
+│   │   ├── main.tf                      ← Provider config + remote state backend
+│   │   ├── variables.tf                 ← Input variables
+│   │   ├── outputs.tf                   ← Output values (AKS name, ACR URL etc.)
+│   │   ├── acr.tf                       ← Azure Container Registry
+│   │   ├── aks.tf                       ← AKS cluster + ACR role assignment
+│   │   ├── keyvault.tf                  ← Azure Key Vault + secrets
+│   │   ├── monitoring.tf                ← Log Analytics + diagnostic settings
+│   │   ├── dns.tf                       ← Azure DNS zone
+│   │   ├── storage.tf                   ← Terraform remote state storage
+│   │   └── terraform.tfvars.example     ← Example variable values
+│   │
+│   ├── k8s/                             ← Base Kubernetes manifests (shared)
+│   │   ├── client-depl.yaml
+│   │   ├── expiration-depl.yaml
+│   │   ├── expiration-redis-depl.yaml
+│   │   ├── nats-depl.yaml
+│   │   ├── order-depl.yaml
+│   │   ├── order-mongo-depl.yaml
+│   │   ├── payment-depl.yaml
+│   │   ├── payment-mongo-depl.yaml
+│   │   ├── product-depl.yaml
+│   │   ├── product-mongo-depl.yaml
+│   │   ├── user-depl.yaml
+│   │   └── user-mongo-depl.yaml
+│   │
+│   ├── k8s-dev/                         ← Local development manifests
+│   │   └── ingress-srv.yaml
+│   │
+│   ├── k8s-prod/                        ← Production manifests (Azure)
+│   │   ├── ingress-srv.yaml             ← Ingress routing rules (Azure annotated)
+│   │   ├── secret-store.yaml            ← ExternalSecrets → Azure Key Vault
+│   │   ├── external-secret.yaml         ← Pulls JWT + Flutter keys from Key Vault
+│   │   └── hpa/                         ← Horizontal Pod Autoscalers
+│   │       ├── auth-hpa.yaml
+│   │       ├── client-hpa.yaml
+│   │       ├── order-hpa.yaml
+│   │       └── product-hpa.yaml
+│   │
+│   └── issuer/                          ← cert-manager ClusterIssuers
+│       ├── staging_issuer.yaml          ← Let's Encrypt staging
+│       └── production_issuer.yaml       ← Let's Encrypt production
+│
+├── client/                              ← Next.js frontend
+│   ├── Dockerfile
+│   ├── package.json
+│   ├── next.config.js
+│   └── src/
+│       ├── pages/
+│       ├── components/
+│       └── api/
+│           └── build-client.js          ← Axios instance (SSR vs browser)
+│
+├── auth/ (user/)                        ← Auth/User microservice
+│   ├── Dockerfile
+│   ├── package.json
+│   └── src/
+│
+├── product/                             ← Product microservice
+│   ├── Dockerfile
+│   ├── package.json
+│   └── src/
+│
+├── order/                               ← Order microservice
+│   ├── Dockerfile
+│   ├── package.json
+│   └── src/
+│
+├── payment/                             ← Payment microservice (Flutterwave)
+│   ├── Dockerfile
+│   ├── package.json
+│   └── src/
+│
+└── expiration/                          ← Order expiration microservice
+    ├── Dockerfile
+    ├── package.json
+    └── src/
 ```
 
-10. See the list of contexts and then select a new context by running these commands:
+---
+
+## ☁️ Azure Services Used
+
+| Azure Service                 | Role in This Project                                       |
+| ----------------------------- | ---------------------------------------------------------- |
+| **AKS**                       | Hosts all microservices, databases, and NATS in Kubernetes |
+| **ACR**                       | Stores Docker images for all 6 services                    |
+| **Azure Pipelines**           | CI/CD — builds, tests, and deploys on every push to main   |
+| **Terraform**                 | Provisions every Azure resource declaratively              |
+| **Azure Key Vault**           | Stores JWT and Flutterwave secrets securely                |
+| **Log Analytics Workspace**   | Aggregates all cluster and application logs                |
+| **Azure Monitor**             | Metrics, alerts, and dashboards                            |
+| **Azure Load Balancer**       | Auto-created by AKS for ingress traffic                    |
+| **Azure Managed Disks (CSI)** | PersistentVolumes for MongoDB and Redis pods               |
+| **Azure DNS**                 | Routes custom domain to Load Balancer                      |
+| **Azure Blob Storage**        | Stores Terraform remote state                              |
+| **Azure DevOps**              | Hosts pipeline, environments, approvals, and secrets       |
+
+---
+
+## 🚀 Deployment Pipeline
+
+The Azure Pipeline runs automatically on every push to `main` and has 3 stages:
 
 ```
-kubectl config get-contexts
-kubectl config use-context <CONTEXT_NAME>
+┌─────────────────┐     ┌──────────────────┐     ┌─────────────────────┐
+│  STAGE 1        │     │  STAGE 2         │     │  STAGE 3            │
+│  Terraform      │────►│  Build & Test    │────►│  Deploy to AKS      │
+│                 │     │                  │     │                     │
+│ - terraform init│     │ - npm ci         │     │ - kubectl apply     │
+│ - terraform plan│     │ - npm test       │     │ - rolling update    │
+│ - terraform apply     │ - docker build   │     │ - rollout verify    │
+│                 │     │ - docker push    │     │ - approval gate     │
+└─────────────────┘     │   (to ACR)       │     └─────────────────────┘
+  Only runs on          └──────────────────┘       Requires manual
+  [infra] commits         All 6 services            approval in
+  or manual trigger       run in parallel           Azure DevOps
 ```
 
-11. Install [ingress-nginx](https://kubernetes.github.io/ingress-nginx/deploy/#quick-start) and [ingress-nginx for GCP](https://kubernetes.github.io/ingress-nginx/deploy/#gce-gke).
+---
 
-12. Find your load balancing port, which GCP automatically generated, in the _Network Services_ tab in GCP.
+## 🔐 Secrets Management
 
-13. For _Windows_ users, open the host file at `C:\Windows\System32\drivers\etc\hosts`. For _Mac_ users, open the host file at `\etc\hosts`. Then, edit the file by adding `YOUR_LOAD_BALANCING_PORT YOUR_CUSTOM_URL` and save as an administrator (e.g., `56.125.456.45 custom.com`).
-
-14. Configure all the YAML files to match your GCP project ID.
-
-15. Create all [Kubernetes secrets](#setup-env).
-
-16. Run the following command and authenticate the GCP account via a web browser:
+Secrets flow from Azure Key Vault into Kubernetes automatically via the **External Secrets Operator**:
 
 ```
-gcloud auth application-default login
+Azure Key Vault
+  └── JWT-KEY
+  └── FLUTTER-KEY
+        │
+        ▼  (External Secrets Operator syncs every 1h)
+Kubernetes Secret (aurapan-secrets)
+  └── jwt-key
+  └── flutter-key
+        │
+        ▼  (mounted as env vars)
+Microservice Pods
 ```
 
-17. Ensure that you are using the correct context before running this command at the root directory:
+---
 
-```
-skaffold dev
-```
+## 📦 Microservices Overview
 
-18. Open a web browser and enter your custom URL with `https://` to see the project come to life
+| Service        | Port | Database | Responsibilities                                      |
+| -------------- | ---- | -------- | ----------------------------------------------------- |
+| **client**     | 3000 | —        | Next.js SSR frontend, product listing, cart, checkout |
+| **user**       | 3000 | MongoDB  | Signup, signin, JWT auth, user profile                |
+| **product**    | 3000 | MongoDB  | Product CRUD, image management, inventory             |
+| **order**      | 3000 | MongoDB  | Order creation, status management                     |
+| **payment**    | 3000 | MongoDB  | Flutterwave + PayPal payment processing               |
+| **expiration** | —    | Redis    | Order expiration countdown via Bull queue             |
 
-Please note that the `setup.sh` script is designed to streamline the installation process by automatically building and pushing Docker images for each folder that contains a `Dockerfile`. This helps simplify the steps required to set up the project on GCP.
+All services communicate asynchronously via **NATS Streaming Server** using event-driven patterns (publishers and listeners).
 
-## Running on Docker Desktop
+---
 
-[![Docker Badge](https://img.shields.io/badge/-Docker-2496ED?style=flat&logo=docker&logoColor=white)](https://www.docker.com/)
+## ⚙️ Local Development Setup
 
-Follow the below steps to run this project on Docker Desktop:
+### Prerequisites
 
-1. Clone the `dev` branch on your computer.
+- Docker Desktop with Kubernetes enabled
+- Node.js 18+
+- kubectl
+- helm
 
-2. Install the following software:
-   * [Node.js](https://nodejs.org/en/)
-   * [Skaffold](https://skaffold.dev/)
-   * [Docker](https://www.docker.com/)
+### Run locally
 
-3. Enable Kubernetes in Docker Desktop preferences.
+```bash
+# Clone the repo
+git clone https://github.com/yourusername/aurapan-ecommerce.git
+cd aurapan-ecommerce
 
-4. Run this script by executing the following command in the root directory of this project:
+# Create required secrets
+kubectl create secret generic jwt-secret \
+  --from-literal=JWT_KEY=your_jwt_secret
 
-```sh
-source setup.sh
-```
-
-The script will prompt you to enter your Docker registry account name and will build and push the Docker images for each folder that contains a `Dockerfile`.
-
-If you prefer to do it manually.
-Run the following command in each folder that contains a `Dockerfile`.
-
-```sh
-docker build -t <YOUR_DOCKER_ACCOUNT_NAME>/<CONTAINER_NAME> .
-docker push <YOUR_DOCKER_ACCOUNT_NAME>/<CONTAINER_NAME>
-```
-
-5. View the list of Kubernetes contexts and select a new context by running these commands:
-
-```sh
-kubectl config get-contexts
-kubectl config use-context docker-desktop
-```
-
-6. Install [ingress-nginx](https://kubernetes.github.io/ingress-nginx/deploy/#quick-start) and enable Kubernetes in Docker Desktop software. (choose _don't have Helm_ version)
-
-7. For Windows users, open the host file at `C:\Windows\System32\drivers\etc\hosts`. For Mac users, open the host file at `/etc/hosts`. Then, add `127.0.0.1 YOUR_CUSTOM_URL` and save the file as an admin. For example, `127.0.0.1 custom.com`.
-
-8. Configure the `infra/k8s-dev/ingress-srv.yaml` file at line 10 to be your custom URL. (ex. mywebsite.com)
-
-9. Create all [Kubernetes secrets](#setup-kubernetes-secret).
-
-10. Run this script in the root directory of this project, and make sure to use the correct context before running the command.
-
-```
-skaffold dev
-```
-
-11. Open a web browser and enter your custom URL with `https://` to see this project come to life!
-
-Please note that the `setup.sh` script is designed to streamline the installation process by automatically building and pushing Docker images for each folder that contains a `Dockerfile`. This helps simplify the steps required to set up the project on Docker Desktop.
-
-# Setup Kubernetes Secret
-
-[(Back to top)](#table-of-contents)
-
-Create all these Kubernetes secrets in the Kubernetes context:
-
-**MONGO_URI_USER, MONGO_URI_PRODUCT, MONGO_URI_ORDER, MONGO_URI_PAYMENT** : [MongoDB](https://www.mongodb.com/)
-```
 kubectl create secret generic mongo-secret \
-"--from-literal=MONGO_URI_PRODUCT=<YOUR_MONGO_DB_URI>" \
-"--from-literal=MONGO_URI_USER=<YOUR_MONGO_DB_URI>" \
-"--from-literal=MONGO_URI_ORDER=<YOUR_MONGO_DB_URI>" \
-"--from-literal=MONGO_URI_PAYMENT=<YOUR_MONGO_DB_URI>"
+  --from-literal=MONGO_URI_USER=mongodb://user-mongo-srv:27017/users \
+  --from-literal=MONGO_URI_PRODUCT=mongodb://product-mongo-srv:27017/products \
+  --from-literal=MONGO_URI_ORDER=mongodb://order-mongo-srv:27017/orders \
+  --from-literal=MONGO_URI_PAYMENT=mongodb://payment-mongo-srv:27017/payments
+
+kubectl create secret generic stripe-secret \
+  --from-literal=STRIPE_KEY=your_flutter_key
+
+kubectl create secret generic paypal-secret \
+  --from-literal=PAYPAL_CLIENT_ID=not_used
+
+# Apply manifests
+kubectl apply -f infra/k8s/
+kubectl apply -f infra/k8s-dev/
+
+# Access the app
+# Add 127.0.0.1 aurapan.dev to your /etc/hosts
+# Open http://aurapan.dev
 ```
 
-Example for YOUR_MONGO_DB_URI: `mongodb+srv://admin:<password>@aurapan.ygmpl.mongodb.net/<your_database_name>?retryWrites=true&w=majority`
+---
 
-**JWT_KEY : --whatever you want--**
-```
-kubectl create secret generic jwt-secret --from-literal=JWT_KEY=<YOUR SECRET>
-```
+## 🌐 Production Deployment (Azure)
 
-**STRIPE_KEY** : [Stripe](https://stripe.com/)
-```
-kubectl create secret generic stripe-secret --from-literal=STRIPE_KEY=<YOUR_STRIPE_KEY>
-```
+### Prerequisites
 
-**PAYPAL_CLIENT_ID** : [Paypal](https://developer.paypal.com/home)
-```
-kubectl create secret generic paypal-secret --from-literal=PAYPAL_CLIENT_ID=<YOUR_PAYPAL_CLIENT_ID>
-```
+- Azure CLI installed and logged in
+- Terraform installed
+- Docker installed
+- Azure DevOps account
 
-# Deployment
+### Step 1 — Bootstrap Terraform remote state
 
-[(Back to top)](#table-of-contents)
-
-## Deploy on DigitalOcean
-
-[![DigitalOcean](https://img.shields.io/badge/DigitalOcean-0080FF?style=flat&logo=digitalocean&logoColor=white)](https://www.digitalocean.com/)
-
-1. sign up a free account with a $200 for 60 days trial and create a Kubernetes cluster in a new project on Digital Ocean
-
-2. generate a new access token on Digital Ocean to connect with Digital Ocean via doctl, go to the _API_ menu then click _generate a new token_, set expiration date and enable both read and write scopes, copy the _token code_ for use in the next step
-
-3. install [doctl](https://docs.digitalocean.com/reference/doctl/how-to/install/) and [kubectl](https://kubernetes.io/docs/tasks/tools/), then run
-```
-doctl auth init --access-token <API_TOKEN_CODE>
+```bash
+az group create --name tfstate-rg --location eastus
+az storage account create --name aurapantfstate \
+  --resource-group tfstate-rg --sku Standard_LRS
+az storage container create --name tfstate \
+  --account-name aurapantfstate
 ```
 
-4. connect with Digital Ocean k8s cluster context by running this command and authorize with your credentials
-```
-doctl kubernetes cluster kubeconfig save <YOUR_CLUSTER_NAME>
-``` 
+### Step 2 — Provision Azure infrastructure
 
-5. switch Kubernetes context to the new context by running
-```
-kubectl config use-context <CONTEXT_NAME>
-```
-
-6. setup all Kubernetes secrets following [this step](#setup-kubernetes-secret)
-
-7. create _GitHub _workflow_ for building an initial docker image on push event at the _main_ branch and perform automated testing in every service on pull request event trigger with trying to merge with the _main_ branch
-
-```
-name: deploy-client
-
-on:
-  push:
-    # watch for pull request into main branch
-    branches:
-      - main
-
-    # watch for changes in client folder
-    paths:
-      - "client/**"
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-
-      # build an image
-      - run: cd client && docker build -t <YOUR_ACCOUNT_NAME>/<YOUR_IMAGE_NAME> .
-
-      # login on docker hub
-      - run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-        env:
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-
-      # push an image to docker hub
-      - run: docker push <YOUR_ACCOUNT_NAME>/<YOUR_IMAGE_NAME>
+```bash
+cd infra/terraform
+terraform init
+terraform apply \
+  -var="jwt_key=your_secret" \
+  -var="stripe_key=your_flutter_key"
 ```
 
-8. generate another new access token on Digital Ocean for authentication via GitHub Action, go to the _API_ menu then click _generate a new token_, set expiration date and enable both read and write scopes, copy the _token code_ for use in the next step as a `DIGITALOCEAN_ACCESS_TOKEN` 
+### Step 3 — Connect to AKS
 
-9. add GitHub action secrets for _docker credentials_ and _digitalocean access token key_ at the security setting in the repository
-```
-DIGITALOCEAN_ACCESS_TOKEN = 
-DOCKER_USERNAME = 
-DOCKER_PASSWORD = 
-```
-
-10. edit files in every service then commit code to the _main_ branch for triggering **Github Action workflows** to build and push all images to your Docker Hub
-
-11. install [ingress-nginx](https://kubernetes.github.io/ingress-nginx/deploy/#digital-ocean) to automatically create **DigitalOcean Load Balancer**
-
-12. separate k8s folder to k8s-dev and k8s-prod then copy `ingress-srv.yaml` file to both folders and edit the host URL to a new domain name
-
-13. create a GitHub workflow for telling the Kubernetes cluster to use images we built by adding these lines
-
-```
-- uses: digitalocean/action-doctl@v2
-  with:
-    token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
-- run: doctl kubernetes cluster kubeconfig save <YOUR_CLUSTER_NAME>
-- run: kubectl rollout restart deployment <YOUR_DEPLOYMENT_NAME>
+```bash
+az aks get-credentials \
+  --resource-group aurapan-rg \
+  --name aurapan-aks
 ```
 
-14. purchase a domain name with a promotion that can be very cheap as $1 for the 1st year such as Namecheap, Porkbun, or Dynadot
+### Step 4 — Install Helm charts
 
-15. config custom domain name nameserver with your domain name registration website by custom adding these lines
-```
-ns1.digitalocean.com
-ns2.digitalocean.com
-ns3.digitalocean.com
-```
+```bash
+# Ingress NGINX
+helm install ingress-nginx ingress-nginx/ingress-nginx \
+  --namespace ingress-nginx --create-namespace
 
-16. add a domain name in the Digital Ocean at networking tab then create a new record
+# cert-manager
+helm install cert-manager jetstack/cert-manager \
+  --namespace cert-manager --create-namespace \
+  --set installCRDs=true
 
-```
-// A record
-HOSTNAME: @
-WILL DIRECT TO: <YOUR_LOAD_BALANCER>
-TTL: 30
+# External Secrets Operator
+helm install external-secrets external-secrets/external-secrets \
+  --namespace external-secrets --create-namespace
 
-// CNAME record
-HOSTNAME: www
-IN AN ALIAS OF: @
-TTL: 30
-```
-
-17. add your cluster name at `deploy-manifests.yaml` file then redo step 7. again
-
-```
-name: deploy-manifests
-
-on:
-  push:
-    # watch for pull request into main branch
-    branches:
-      - main
-
-    # watch for changes in infra folder
-    paths:
-      - "infra/**"
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-
-      # use and cliententicate doctl
-      - uses: digitalocean/action-doctl@v2
-        with:
-          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
-
-      # use and cliententicate doctl
-      - run: doctl kubernetes cluster kubeconfig save <YOUR_CLUSTER_NAME>
-
-      # apply deployment yaml files (k8s-prod is for production!)
-      - run: kubectl apply -f infra/k8s && kubectl apply -f infra/k8s-prod
+# Prometheus + Grafana
+helm install kube-prometheus-stack \
+  prometheus-community/kube-prometheus-stack \
+  --namespace monitoring --create-namespace
 ```
 
-18. change `do-loadbalancer-hostname` and `host` at file `infra/k8s-prod/ingress-srv.yaml` to your domain name
+### Step 5 — Deploy application
 
-19. change the URL in `client/api/build-client.js` to your domain name
-
-20. after that, we will follow step 4 of this guide [How to Set Up an Nginx Ingress with Cert-Manager on DigitalOcean Kubernetes](https://www.digitalocean.com/community/tutorials/how-to-set-up-an-nginx-ingress-with-cert-manager-on-digitalocean-kubernetes) to make our website ready for **HTTPS** requests with the certificate issued by **Let's encrypt**
-
-21. begin with installing the _cert-manager_ namespace by running the command
-```
-kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v1.7.1/cert-manager.yaml
+```bash
+kubectl apply -f infra/k8s/
+kubectl apply -f infra/k8s-prod/
+kubectl apply -f infra/issuer/
 ```
 
-22. change your directory to `infra/issuer/` there will be 2 files that you need to change the _email_ and _name of a secret key_ as you wish then run the command
+### Step 6 — Set up Azure DevOps Pipeline
+
+1. Create project in Azure DevOps
+2. Add service connections (Azure RM + Kubernetes)
+3. Create pipeline from `azure-pipelines.yml`
+4. Add `production` environment with approval gate
+5. Add variable group with `JWT_KEY` and `STRIPE_KEY`
+
+---
+
+## 📊 Monitoring
+
+| Tool              | Access                                        |
+| ----------------- | --------------------------------------------- |
+| **Azure Monitor** | Azure Portal → Monitor                        |
+| **Grafana**       | `kubectl get svc -n monitoring` → external IP |
+| **Prometheus**    | Internal cluster access                       |
+| **Pod logs**      | `kubectl logs -l app=<service> -n default`    |
+
+---
+
+## 🔄 CI/CD Flow
+
 ```
-kubectl create -f staging_issuer.yaml
-``` 
+Developer pushes to main
+        │
+        ▼
+Azure Pipelines triggers
+        │
+        ├── Terraform stage (if [infra] in commit message)
+        │     └── Provisions/updates Azure infrastructure
+        │
+        ├── Build stage (always)
+        │     ├── Runs tests for all 6 services in parallel
+        │     └── Builds and pushes Docker images to ACR
+        │
+        └── Deploy stage (on main branch only)
+              ├── Requires manual approval in Azure DevOps
+              ├── Gets AKS credentials
+              ├── Applies all K8s manifests
+              └── Verifies rolling deployment
 ```
-kubectl create -f production_issuer.yaml
-```
 
-23. at file `infra/k8s-prod/ingress-srv.yaml` change _cert-manager.io/cluster-issuer_ to `"letsencrypt-staging"` then run this command at `infra/k8s-prod/` directory
-```
-kubectl apply -f ingress-srv.yaml
-```
+---
 
-24. then change _cert-manager.io/cluster-issuer_ back to `"letsencrypt-prod"` and run this command at `infra/k8s-prod/` directory
-```
-kubectl apply -f ingress-srv.yaml
-```
+## 🛡️ Security
 
-25. waiting around 2-15 minutes for setting up then browse your website with **HTTPS** protocol
+- All secrets stored in **Azure Key Vault** — never in code or environment files
+- **External Secrets Operator** syncs secrets into K8s automatically
+- **RBAC** enabled on AKS cluster
+- **TLS** via cert-manager + Let's Encrypt
+- **JWT** authentication on all protected API routes
+- **ACR** integrated with AKS via managed identity (no passwords)
+- `.gitignore` excludes all `.env` and `tfvars` files
 
-# Technology
+---
 
-[(Back to top)](#table-of-contents)
+## 📝 Key Learnings & Challenges
 
-This project is built using the following technologies:
+- Migrating DigitalOcean-specific Kubernetes annotations to Azure equivalents
+- Configuring External Secrets Operator with Azure Key Vault using Service Principal auth
+- Resolving Next.js SSR server-side HTTP routing through internal cluster DNS
+- Managing Terraform remote state with Azure Blob Storage
+- Debugging `CreateContainerConfigError` caused by missing Kubernetes secrets
+- Fixing Let's Encrypt HTTP-01 challenges behind an ingress controller
 
-- [Next.js](https://nextjs.org/)
-- [TypeScript](https://www.typescriptlang.org/)
-- [React-Bootstrap](https://react-bootstrap.github.io/)
-- [MongoDB](https://www.mongodb.com/)
-- [Docker](https://www.docker.com/)
-- [Kubernetes](https://kubernetes.io/)
-- [Github Action](https://github.com/features/actions)
-- [NATS Streaming Server](https://docs.nats.io/nats-streaming-concepts/intro)
-- [Skaffold](https://skaffold.dev/)
-- [NPM package](https://www.npmjs.com/)
+---
 
-# Disclaimer
+## 👤 Author
 
-[(Back to top)](#table-of-contents)
+**Emmanuel** — DevOps / Cloud Engineer  
+Deployed and maintained the Azure infrastructure, CI/CD pipeline, and Kubernetes manifests for this project.
 
-All images used in this project are for educational purposes only. 😘
+Original application: [thasup/microservices-ecommerce](https://github.com/thasup/microservices-ecommerce)
 
+---
