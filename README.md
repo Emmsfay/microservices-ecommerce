@@ -487,6 +487,3 @@ Azure Pipelines triggers
 **Emmanuel** — DevOps / Cloud Engineer  
 Deployed and maintained the Azure infrastructure, CI/CD pipeline, and Kubernetes manifests for this project.
 
-Original application: [thasup/microservices-ecommerce](https://github.com/thasup/microservices-ecommerce)
-
----
