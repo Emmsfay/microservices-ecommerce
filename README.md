@@ -16,29 +16,6 @@
 
 Aurapan is a women's clothing e-commerce website that features a fully operational **microservices architecture**. Built on the **Next.js** framework for the client-side, while the server-side is developed with **TypeScript and Express** framework, the website is developed on the **Google Cloud Platform** environment and integrated with automation testing through **GitHub Action** workflows. Deployed on a **DigitalOcean** cluster with a Let's Encrypt certificate, Aurapan delivers a secure and seamless shopping experience.
 
-# Table of contents
-
-- [Aurapan](#aurapan)
-- [Table of contents](#table-of-contents)
-- [Demo](#demo)
-- [Features](#features)
-- [Usage](#usage)
-  - [Sign up for an account](#sign-up-for-an-account)
-  - [Purchase products](#purchase-products)
-    - [Pay with Stripe method (recommended)](#pay-with-stripe-method-recommended)
-    - [Pay with the PayPal method](#pay-with-the-paypal-method)
-  - [Receive an order](#receive-an-order)
-  - [Access the admin dashboard](#access-the-admin-dashboard)
-  - [Add a product to your wishlist](#add-a-product-to-your-wishlist)
-  - [Perform CRUD operations on the product database (create, update, delete)](#perform-crud-operations-on-the-product-database-create-update-delete)
-- [Installation](#installation)
-  - [Running on Google Cloud Platform](#running-on-google-cloud-platform)
-  - [Running on Docker Desktop](#running-on-docker-desktop)
-- [Setup Kubernetes Secret](#setup-kubernetes-secret)
-- [Deployment](#deployment)
-  - [Deploy on DigitalOcean](#deploy-on-digitalocean)
-- [Technology](#technology)
-- [Disclaimer](#disclaimer)
 
 # Demo
 
