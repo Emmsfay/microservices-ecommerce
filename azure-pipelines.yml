@@ -1,0 +1,105 @@
+trigger:
+  branches:
+    include:
+      - main
+
+variables:
+  ACR_NAME: 'aurapanacr'
+
+stages:
+
+# ── STAGE 1: Provision Infrastructure ──────────────────
+- stage: Terraform
+  displayName: 'Provision Azure Infrastructure'
+  condition: |
+    or(
+      contains(variables['Build.SourceVersionMessage'], '[infra]'),
+      eq(variables['Build.Reason'], 'Manual')
+    )
+  jobs:
+    - job: TerraformApply
+      pool:
+        vmImage: 'ubuntu-latest'
+      steps:
+        - template: .azure/templates/terraform-apply.yml
+
+# ── STAGE 2: Build & Test All Services ─────────────────
+- stage: Build
+  displayName: 'Build & Test'
+  dependsOn: []
+  jobs:
+    - job: BuildAuth
+      pool:
+        vmImage: 'ubuntu-latest'
+      steps:
+        - template: .azure/templates/build-service.yml
+          parameters:
+            serviceName: auth
+            acrName: $(ACR_NAME)
+
+    - job: BuildProduct
+      pool:
+        vmImage: 'ubuntu-latest'
+      steps:
+        - template: .azure/templates/build-service.yml
+          parameters:
+            serviceName: product
+            acrName: $(ACR_NAME)
+
+    - job: BuildOrder
+      pool:
+        vmImage: 'ubuntu-latest'
+      steps:
+        - template: .azure/templates/build-service.yml
+          parameters:
+            serviceName: order
+            acrName: $(ACR_NAME)
+
+    - job: BuildPayment
+      pool:
+        vmImage: 'ubuntu-latest'
+      steps:
+        - template: .azure/templates/build-service.yml
+          parameters:
+            serviceName: payment
+            acrName: $(ACR_NAME)
+
+    - job: BuildExpiration
+      pool:
+        vmImage: 'ubuntu-latest'
+      steps:
+        - template: .azure/templates/build-service.yml
+          parameters:
+            serviceName: expiration
+            acrName: $(ACR_NAME)
+
+    - job: BuildClient
+      pool:
+        vmImage: 'ubuntu-latest'
+      steps:
+        - template: .azure/templates/build-service.yml
+          parameters:
+            serviceName: client
+            acrName: $(ACR_NAME)
+
+# ── STAGE 3: Deploy to AKS ─────────────────────────────
+- stage: Deploy
+  displayName: 'Deploy to AKS'
+  dependsOn: Build
+  condition: |
+    and(
+      succeeded(),
+      eq(variables['Build.SourceBranch'], 'refs/heads/main')
+    )
+  jobs:
+    - deployment: DeployProduction
+      pool:
+        vmImage: 'ubuntu-latest'
+      environment: 'production'
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+              - template: .azure/templates/deploy-manifests.yml
+                parameters:
+                  buildId: $(Build.BuildId)
